@@ -1,6 +1,7 @@
 #!/usr/bin/env jython
 
 import subprocess
+import shlex
 
 import hudson.model.Computer as Computer
 import hudson.Util as Util
@@ -79,7 +80,8 @@ def perform(build, launcher, listener):
     command += ' ' + arguments
     # launch InstallShield builder (ISCmdBld.exe)
     logger.println("Executing command: " + command)
-    popen = subprocess.Popen(command, shell=False,
+    command_list = shlex.split(command)
+    popen = subprocess.Popen(command_list, shell=False,
                              stdout=subprocess.PIPE, stderr=subprocess.PIPE)
     (stdoutdata, stderrdata) = popen.communicate()
     for line in stdoutdata.splitlines():
